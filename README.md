@@ -100,14 +100,21 @@ default function `save.image()`), this creates a folder where each
 object, variable and function is stored as a separate file. Each of
 these RData files can loaded in individually using `load()`, or the
 entire environment can be loaded from this folder using
-`mcloadEnvironment()`. This functions automatically loads the parallel
-package.
+`mcloadEnvironment()`. The reason the files are saved as RData instead
+of RDS (as is more common when saving individual variables) is because
+RData files also stores the name of the variable in contrast to RDS
+files which you have the name again when loading (using readRDS). This
+functions automatically loads the parallel package.
 
-This function takes 2 parameters, a path to an empty folder where the
-RDS files are stored and the number of cores. When the folder does not
+This function takes 5 parameters, a path to an empty folder where the
+RDS files are stored, the number of cores, whether functions need to be
+saved (TRUE by default), whether to use compression (FALSE by default,
+makes the function really slow but does save storage space) and the
+compression level for igzip (defaults to 3). When the folder does not
 exists, it will be created. The folder needs to be empty, otherwise the
-function throws an error. Either remove all files in the folder or enter
-a different, empty, folder. The number of cores defaults to 10.
+function throws an error. In this case, either remove all files in the
+folder or enter a different, empty, folder. The number of cores defaults
+to 10.
 
 This function saves the environment slightly faster than
 `mcsave.image()` and `save.image()`, but loading the entire environment
