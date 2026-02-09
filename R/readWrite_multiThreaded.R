@@ -3,7 +3,7 @@
 ### Date:	        18-12-2025
 ### Email:          	g.vanbeek@erasmusmc.nl
 ###
-### Version:        	0.1.0
+### Version:        	1.0.0
 ###
 ### Description:    	Loads functions to read and write RDS files and RData files multicore
 ###                 	It loads the following functions:

@@ -4,7 +4,7 @@ Version: 0.1.0
 Authors@R: 
     person("Gregory", "van Beek", , "g.vanbeek@erasmusmc.nl", role = c("aut", "cre"))
 Description: This adds multiple functions for faster reading and writing RDS files and R environment (RData) files. It includes the function mcsave.image(), mcloadEnvironment, mcwriteEnvironment, mcsaveRDS and mcreadRDS.
-License: `use_gpl3_license()`
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
