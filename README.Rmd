@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of mcReadWrite is to ...
+Parallel reading and writing of RDS and RData files
 
 ## Installation
 
@@ -29,7 +29,7 @@ devtools::install_github("bioinf-hema-emc/mcReadWrite")
 
 ## Requirements
 
-This package are only tested on Ubuntu 24.03.
+This package are only tested on Ubuntu 24.04.3 LTS.
 The functions in this package require the following system functions to be installed:
 
 * [igzip](https://manpages.debian.org/testing/isal/igzip.1.en.html) (from the isal-package)
@@ -89,7 +89,29 @@ Higher values means better compression, but also requires more time.
 Note that igzip always use some compression, even when set to 0.
 
 ### mcsaveEnvironment
+
+Save an R environment using multiple compute cores.
+This function is faster than the default `save.image()` and `mcsave.image()`.
+Instead of saving the environment in a single .RData file (e.g. as is done with the default function `save.image()`), this creates a folder where each object, variable and function is stored as a separate file.
+Each of these RData files can loaded in individually using `load()`, or the entire environment can be loaded from this folder using `mcloadEnvironment()`.
+This functions automatically loads the parallel package.
+
+This function takes 2 parameters, a path to an empty folder where the RDS files are stored and the number of cores.
+When the folder does not exists, it will be created.
+The folder needs to be empty, otherwise the function throws an error.
+Either remove all files in the folder or enter a different, empty, folder.
+The number of cores defaults to 10.
+
+This function saves the environment slightly faster than `mcsave.image()` and `save.image()`, but loading the entire environment using `mcloadEnvironment()` requires more time compared to using `load()` with an RData file.
+Therefore, the combination of `mcsaveEnvironment` and `mcloadEnvironment` will not gain you time with saving and loading the environment, but the way it stores the environment can be more convenient in some cases.
+Instead of saving the entire environment in a single RData file, this stores each object, value and function as an individual RData files.
+When you only want to load some objects from the environment, this allows you to only load those instead of having to load the whole environment first.
+
 ### mcloadEnvironment
+
+Load an R environment that was saved using `mcsaveEnvironment()`.
+
+This function takes 2 parameters, a path to a folder where the RDS files are stored using `mcsaveEnvironment()` and the number of cores.
 
 ## Example
 
@@ -117,25 +139,44 @@ system.time(mcsaveRDS(myObj, "myObject.RDS"))
 # MCLOADRDS ----
 system.time(readRDS("myObject.RDS"))
 #   user  system elapsed 
-#  77.240  14.935  92.001
+# 77.240  14.935  92.001
 
 system.time(mcreadRDS("myObject.RDS"))
 #   user  system elapsed 
 # 76.652  30.079  41.281 
 
 
+
 # MCSAVE.IMAGE ----
 system.time(save.image('myEnvironment.RData'))
 #   user  system elapsed 
-# 34.728  29.664  66.836
+# 33.935  35.957  73.919 
 # RData file size = 24Gb
 
 system.time(mcsave.image('myEnvironment.RData'))
+#    user  system elapsed 
+# 151.206  92.672  86.360 
+# RData file size = 13Gb
 
+
+
+# MCSAVEENVIRONMENT ----
+system.time(mcsaveEnvironment('myEnvironment'))
+# Loading required package: parallel
+#   user  system elapsed 
+# 13.339  17.531  49.259 
+# Folder size = 24Gb.
+
+
+
+# MCLOADENVIRONMENT ----
+system.time(load('myEnvironment.RData'))
+#   user  system elapsed 
+# 96.137  22.682 118.585 
+
+system.time(mcloadEnvironment('myEnvironment'))
+# Loading required package: parallel
+#    user  system elapsed 
+# 211.311  74.591 210.07
 
 ```
-
-
-
-
-
