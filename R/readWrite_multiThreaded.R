@@ -98,7 +98,7 @@ mcsave.image <- function(file=".RData", compression_level = 3, cores=4){
  if(compression_level > 3){
    compression_level = 3
  }
- if(threads > 1){
+ if(cores > 1){
    con <- pipe(paste0("bash -l -c 'module load isal && igzip -z -c -",
                       compression_level ," -T",cores," > ",file, "'"),"wb")
    save(list = ls(all.names = T, envir=parent.frame()), file = con, envir=parent.frame())
@@ -159,7 +159,7 @@ mcsaveEnvironment <- function(savepath, save_functions = T, cores = 10, compress
 
         mclapply(seq(env_list), function(x){
             .mcsave(obj_list = env_list[x], file = file.path(savepath, paste0(env_list[x], '.RData')),
-                    compression_level = compression_level, threads = 1)
+                    compression_level = compression_level, cores = 1)
         }, mc.cores = cores)
 
     } else {
