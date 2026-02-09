@@ -100,7 +100,7 @@ mcsave.image <- function(file=".RData", compression_level = 3, cores=4){
  }
  if(threads > 1){
    con <- pipe(paste0("bash -l -c 'module load isal && igzip -z -c -",
-                      compression_level ," -T",threads," > ",file, "'"),"wb")
+                      compression_level ," -T",cores," > ",file, "'"),"wb")
    save(list = ls(all.names = T, envir=parent.frame()), file = con, envir=parent.frame())
    close(con)
    } else {
