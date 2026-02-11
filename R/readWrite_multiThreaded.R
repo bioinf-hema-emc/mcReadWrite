@@ -88,7 +88,7 @@ mcreadRDS <- function(file,cores=4) {
 #' @usage mcsave.image(file = 'myEnvironment.RData')
 #'
 #' @export
-mcsave.image <- function(file=".RData", compression_level = 3, cores=4){
+mcsave.image <- function(file=".RData", compression_level = 2, cores=4){
  if(cores > 1){
    if(cores < 1 || ! is.numeric(cores)){
      print("Warning: Enter integer between 1 and 4. Resetting cores <- 1")
